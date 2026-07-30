@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="popup-container">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="scraper">📊 Scraper</button>
+      <button class="tab-btn" data-tab="filler">📝 Form Filler</button>
+    </div>
+
+    <!-- Scraper tab: [DEV A] -->
+    <div id="tab-scraper" class="tab-panel active">
+      <button id="btn-extract">Extract Tables</button>
+      <div id="scraper-progress" class="hidden"><p>Scanning page for tables…</p></div>
+      <div id="scraper-results" class="hidden">
+        <p id="scraper-status"></p>
+        <button id="btn-csv">Download CSV</button>
+        <button id="btn-excel">Download Excel</button>
+      </div>
+      <div id="scraper-error" class="hidden error-banner"></div>
+    </div>
+
+    <!-- Filler tab: [DEV B] -->
+    <div id="tab-filler" class="tab-panel">
+      <input type="file" id="file-upload" accept=".csv" />
+      <button id="btn-scan">🔍 Scan Page for Fields</button>
+      <div id="filler-mapping" class="hidden">
+        <h4>Detected Fields</h4>
+        <div id="mapping-list"></div>
+        <button id="btn-start-fill">▶ Start Batch</button>
+      </div>
+      <div id="filler-progress" class="hidden">
+        <div class="progress-bar"><div id="progress-fill"></div></div>
+        <p id="filler-status">Filling row 0 of 0…</p>
+        <button id="btn-cancel">⏹ Cancel</button>
+      </div>
+      <div id="filler-success" class="hidden success-banner"></div>
+      <div id="filler-error" class="hidden error-banner"></div>
+    </div>
+  </div>
+  <script type="module" src="./main.ts"></script>
+</body>
+</html>

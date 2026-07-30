@@ -1,0 +1,15 @@
+# deps
+node_modules/
+
+# WXT build + generated types
+.output/
+.wxt/
+stats.html
+*.zip
+
+# env & editor
+.env
+.env.*
+.DS_Store
+.idea/
+.vscode/
