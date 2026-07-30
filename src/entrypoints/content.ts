@@ -24,16 +24,12 @@ export default defineContentScript({
     async function handle(request: CommandMessage): Promise<CommandResponse> {
       switch (request.command) {
         case COMMANDS.SCRAP: {
-          broadcastEvent(EVENTS.SCRAP_INITIATED);
+          // No events here: scraping is one synchronous pass, so the popup gets
+          // everything it needs from this response.
           const tables = scrapeTablesFromPage(request.payload?.selector ?? null);
           if (!tables.length) {
-            broadcastEvent(EVENTS.SCRAP_FINISHED_WRONG, { error: ERROR_CODES.NO_TABLES_FOUND });
             return { success: false, error: ERROR_CODES.NO_TABLES_FOUND };
           }
-          broadcastEvent(EVENTS.SCRAP_FINISHED_SUCCESSFULLY, {
-            tableCount: tables.length,
-            totalRows: tables.reduce((a, t) => a + t.rowCount, 0),
-          });
           return { success: true, data: tables };
         }
 
@@ -68,6 +64,19 @@ export default defineContentScript({
           terminate = true; // the fill loop checks this between rows
           return { success: true };
         }
+
+        // ── TODO (Option B): pause / skip / retry ────────────────────────────
+        // Extend the TERMINATE pattern — do NOT make broadcastEvent await a
+        // reply (the popup is often closed mid-batch, so a reply-dependent
+        // event would hang). Instead add control commands that flip flags the
+        // fill loop polls between rows:
+        //   case COMMANDS.PAUSE:  { paused = true;  return { success: true }; }
+        //   case COMMANDS.RESUME: { paused = false; return { success: true }; }
+        //   case COMMANDS.SKIP:   { skipRow = true; return { success: true }; }
+        // Then pass shouldPause()/shouldSkip() into fillFormBatch and have the
+        // loop `await` a resume gate between rows. No correlationId needed —
+        // the popup sets state, the loop reads it; order is irrelevant.
+        // Also add COMMANDS.PAUSE/RESUME/SKIP to constants.ts when you wire this.
 
         default:
           return { success: false, error: `Unknown command: ${request.command}` };

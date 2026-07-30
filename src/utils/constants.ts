@@ -8,12 +8,9 @@ export const COMMANDS = {
 } as const;
 
 export const EVENTS = {
-  // Scraper
-  SCRAP_INITIATED: 'SCRAP_INITIATED',
-  SCRAP_FINISHED_SUCCESSFULLY: 'SCRAP_FINISHED_SUCCESSFULLY',
-  SCRAP_FINISHED_WRONG: 'SCRAP_FINISHED_WRONG',
-  SCRAP_TERMINATED: 'SCRAP_TERMINATED',
-  // Form Filler
+  // Note: the scraper is a single synchronous pass — its result comes back in
+  // the CommandResponse, so it needs no events. All events below are the
+  // filler's one-way progress broadcast to the popup.
   FILL_INITIATED: 'FILL_INITIATED',
   FILL_ROW_STARTED: 'FILL_ROW_STARTED',
   FILL_FIELD_FILLED: 'FILL_FIELD_FILLED',
