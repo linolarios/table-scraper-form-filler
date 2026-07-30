@@ -15,9 +15,8 @@ tabBtns.forEach((btn) => {
 });
 
 listenToEvents((event, payload) => {
-  if (event.startsWith('SCRAP_')) {
-    window.dispatchEvent(new CustomEvent('scrap-event', { detail: { event, payload } }));
-  } else if (event.startsWith('FILL_')) {
+  // Only the filler broadcasts events (the scraper uses its CommandResponse).
+  if (event.startsWith('FILL_')) {
     window.dispatchEvent(new CustomEvent('fill-event', { detail: { event, payload } }));
   }
 });

@@ -14,3 +14,6 @@ button { padding: 8px 12px; border-radius: 6px; border: 0; cursor: pointer; }
 .progress-bar { height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
 #progress-fill { height: 100%; width: 0; background: var(--accent); transition: width .2s; }
 .mapping-row { display: flex; gap: 6px; font-size: 12px; padding: 2px 0; }
+.log { max-height: 120px; overflow-y: auto; margin-top: var(--gap); padding: 6px 8px; background: #0f172a; color: #cbd5e1; border-radius: 6px; font: 11px/1.5 ui-monospace, monospace; white-space: pre; }
+.log .row { color: #93c5fd; }
+.log .ok { color: #86efac; }

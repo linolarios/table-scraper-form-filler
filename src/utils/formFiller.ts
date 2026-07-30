@@ -14,6 +14,10 @@ export async function fillFormBatch(payload: FillPayload, emit: Emit, shouldStop
     if (shouldStop()) {
       return { success: false, error: { code: 'TERMINATED', atRow: i }, report };
     }
+    // TODO (Option B): between-row control gate. When you add pause/skip,
+    // accept shouldPause()/shouldSkip() params and here:
+    //   while (shouldPause() && !shouldStop()) await sleep(150); // resume gate
+    //   if (shouldSkip()) { clearSkip(); continue; }             // skip this row
 
     emit('FILL_ROW_STARTED', { currentRow: i + 1, totalRows: data.length });
     const row = data[i];

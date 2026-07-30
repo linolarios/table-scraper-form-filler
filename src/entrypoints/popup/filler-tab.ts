@@ -12,6 +12,7 @@ export function initFillerTab() {
   const progressDiv = $('filler-progress');
   const progressFill = $('progress-fill');
   const statusText = $('filler-status');
+  const log = $('filler-log');
   const successDiv = $('filler-success');
   const errorDiv = $('filler-error');
 
@@ -33,6 +34,8 @@ export function initFillerTab() {
 
   $('btn-start-fill').addEventListener('click', async () => {
     hideAll();
+    log.textContent = '';
+    progressFill.style.width = '0%';
     progressDiv.classList.remove('hidden');
     const payload = {
       data: uploadedData,
@@ -55,12 +58,26 @@ export function initFillerTab() {
     chrome.runtime.sendMessage({ command: COMMANDS.TERMINATE, payload: { reason: 'USER_CANCELLED' } });
   });
 
-  // Real per-row progress, broadcast from the content script.
+  // One-way progress broadcast from the content script → status, bar, and a
+  // field-level activity log. Uses every FILL_ event the filler emits.
+  const esc = (s: string) => s.replace(/[<&]/g, (c) => (c === '<' ? '&lt;' : '&amp;'));
+  const append = (text: string, cls = '') => {
+    log.insertAdjacentHTML('beforeend', `<span class="${cls}">${esc(text)}\n</span>`);
+    log.scrollTop = log.scrollHeight;
+  };
+
   window.addEventListener('fill-event', ((e: CustomEvent) => {
     const { event, payload } = e.detail;
     if (event === EVENTS.FILL_ROW_STARTED) {
-      progressFill.style.width = `${(payload.currentRow / payload.totalRows) * 100}%`;
       statusText.textContent = `Filling row ${payload.currentRow} of ${payload.totalRows}…`;
+      append(`▸ Row ${payload.currentRow}/${payload.totalRows}`, 'row');
+    } else if (event === EVENTS.FILL_FIELD_FILLED) {
+      append(`    ✓ ${payload.field}`, 'ok');
+    } else if (event === EVENTS.FILL_ROW_SUBMITTED) {
+      append(`    ⏎ submitted`);
+    } else if (event === EVENTS.FILL_ROW_FINISHED) {
+      // Bar reflects *completed* rows, so advance it on finish.
+      progressFill.style.width = `${(payload.row / payload.totalRows) * 100}%`;
     } else if (event === EVENTS.FILL_TERMINATED) {
       progressDiv.classList.add('hidden');
       errorDiv.textContent = 'Stopped.';
