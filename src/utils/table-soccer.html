@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liga MX - Tabla de Posiciones</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        h1 { color: #1a1a2e; text-align: center; }
+        .exc-table-scroll { overflow-x: auto; max-width: 900px; margin: 0 auto; }
+        .exc-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        .exc-table thead th {
+            background: #1a1a2e;
+            color: white;
+            padding: 12px 8px;
+            text-align: center;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+        .exc-table thead th.th-left { text-align: left; padding-left: 16px; }
+        .exc-table tbody td {
+            padding: 10px 8px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+        .exc-table tbody tr:hover { background: #f0f4ff; }
+        .exc-club-flex {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-left: 8px;
+        }
+        .exc-rank {
+            font-weight: bold;
+            color: #666;
+            min-width: 20px;
+        }
+        .exc-club-icon { width: 20px; height: 20px; }
+        .exc-pts { font-weight: bold; color: #1a1a2e; }
+        .instructions {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 16px;
+            background: #e8f4fd;
+            border-radius: 8px;
+            border-left: 4px solid #2563eb;
+        }
+        .instructions h3 { margin: 0 0 8px 0; color: #1e40af; }
+        .instructions ol { margin: 0; padding-left: 20px; }
+        .instructions li { margin: 4px 0; }
+    </style>
+</head>
+<body>
+<h1>⚽ Liga MX - Tabla de Posiciones</h1>
+
+<div class="instructions">
+    <h3>🧪 How to test the scraper extension</h3>
+    <ol>
+        <li>Open this file in the Chrome window launched by <code>npm run dev</code></li>
+        <li>Click the extension icon (puzzle piece) in the toolbar</li>
+        <li>Click <strong>"Extract Tables"</strong></li>
+        <li>Verify: <em>"Found 1 table(s), 18 rows"</em> appears</li>
+        <li>Click <strong>"Download CSV"</strong> — open the CSV in Excel</li>
+        <li>Click <strong>"Download Excel"</strong> — open the XLSX in Excel</li>
+    </ol>
+</div>
+
+<div class="exc-table-scroll">
+    <table class="exc-table">
+        <thead>
+        <tr>
+            <th class="th-left">Club</th>
+            <th>Pts</th>
+            <th>PJ</th>
+            <th>PG</th>
+            <th>PE</th>
+            <th>PP</th>
+            <th>GF</th>
+            <th>GC</th>
+            <th>Dif</th>
+        </tr>
+        </thead>
+        <tbody id="exc-table-body">
+        <tr>
+            <td><div class="exc-club-flex"><span class="exc-rank">1</span><img src="https://imagenes.excelsior.com.mx/uploads/2026/01/10/rce1jvtl2mk8jruuc.png" class="exc-club-icon">Pumas</div></td>
+            <td class="exc-pts">36</td><td>17</td><td>10</td><td>6</td><td>1</td><td>34</td><td>17</td><td>17</td>
+        </tr>
+        <tr>
+            <td><div class="exc-club-flex"><span class="exc-rank">2</span><img src="https://imagenes.excelsior.com.mx/uploads/2026/01/10/ldbzrt2o9mk8jrv8q.png" class="exc-club-icon">Chivas</div></td>
+            <td class="exc-pts">36</td><td>17</td><td>11</td><td>3</td><td>3</td><td>33</td><td>17</td><td>16</td>
+        </tr>
+        <tr>
+            <td><div class="exc-club-flex"><span class="exc-rank">3</span><img src="https://imagenes.excelsior.com.mx/uploads/2026/01/10/i79pdynoemk8jrwar.png" class="exc-club-icon">Cruz Azul</div></td>
+            <td class="exc-pts">33</td><td>17</td><td>9</td><td>6</td><td>2</td><td>31</td><td>18</td><td>13</td>
+        </tr>
+        <tr>
+            <td><div class="exc-club-flex"><span class="exc-rank">4</span><img src="https://imagenes.excelsior.com.mx/uploads/2026/01/10/971niu51ymk8jrue3.png" class="exc-club-icon">Pachuca</div></td>
+            <td class="exc-pts">31</td><td>17</td><td>9</td><td>4</td><td>4</td><td>25</td><td>19</td><td>6</td>
+        </tr>
+        <tr>
+            <td><div class="exc-club-flex"><span class="exc-rank">5</span><img src="https://imagenes.excelsior.com.mx/uploads/2026/01/10/fa0w88mwtmk8jrwpc.png" class="exc-club-icon">Toluca</div></td>
+            <td class="exc-pts">30</td><td>17</td><td>8</td><td>6</td><td>3</td><td>28</td><td>16</td><td>12</td>
+        </tr>
+        <tr>
+            <td><div class="exc-club-flex"><span class="exc-rank">6</span><img src="https://imagenes.excelsior.com.mx/uploads/2026/01/10/le7n8klflmk8jrzyp.png" class="exc-club-icon">Atlas</div></td>
+            <td class="exc-pts">26</td><td>17</td><td>7</td><td>5</td><td>5</td><td>16</td><td>18</td><td>-2</td>
+        </tr>
+        <tr>
+            <td><div class="exc-club-flex"><span class="exc-rank">7</span><img src="https://imagenes.excelsior.com.mx/uploads/2026/01/10/c1gn5c11cmk8jrxyp.png" class="exc-club-icon">Tigres</div></td>
+            <td class="exc-pts">25</td><td>17</td><td>7</td><td>4</td><td>6</td><td>28</td><td>18</td><td>10</td>
+        </tr>
+        <tr>
+            <td><div class="exc-club-flex"><span class="exc-rank">8</span><img src="https://imagenes.excelsior.com.mx/uploads/2026/01/10/ibwbu1134mk8jrzow.png" class="exc-club-icon">América</div></td>
+            <td class="exc-pts">25</td><td>17</td><td>7</td><td>4</td><td>6</td><td>20</td><td>17</td><td>3</td>
+        </tr>
+        <tr>
+            <td><div class="exc-club-flex"><span class="exc-rank">9</span><img src="https://imagenes.excelsior.com.mx/uploads/2026/01/10/vpy36odzmmk8jrzbi.png" class="exc-club-icon">Tijuana</div></td>
+            <td class="exc-pts">23</td><td>17</td><td>5</td><td>8</td><td>4</td><td>19</td><td>17</td><td>2</td>
+        </tr>
+        <tr>
+            <td><div class="exc-club-flex"><span class="exc-rank">10</span><img src="https://imagenes.excelsior.com.mx/uploads/2026/01/10/pv3shn28gmk8jrqoh.png" class="exc-club-icon">León</div></td>
+            <td class="exc-pts">22</td><td>17</td><td>7</td><td>1</td><td>9</td><td>22</td><td>32</td><td>-10</td>
+        </tr>
+        <tr>
+            <td><div class="exc-club-flex"><span class="exc-rank">11</span><img src="https://imagenes.excelsior.com.mx/uploads/2026/01/10/7aqr522b0mk8jrnif.png" class="exc-club-icon">Querétaro</div></td>
+            <td class="exc-pts">20</td><td>17</td><td>4</td><td>8</td><td>5</td><td>17</td><td>21</td><td>-4</td>
+        </tr>
+        <tr>
+            <td><div class="exc-club-flex"><span class="exc-rank">12</span><img src="https://imagenes.excelsior.com.mx/uploads/2026/01/10/t5m0tapbfmk8js03q.png" class="exc-club-icon">Juárez</div></td>
+            <td class="exc-pts">19</td><td>17</td><td>5</td><td>4</td><td>8</td><td>26</td><td>32</td><td>-6</td>
+        </tr>
+        <tr>
+            <td><div class="exc-club-flex"><span class="exc-rank">13</span><img src="https://imagenes.excelsior.com.mx/uploads/2026/01/10/ufo5vuf2zmk8jrw47.png" class="exc-club-icon">Monterrey</div></td>
+            <td class="exc-pts">18</td><td>17</td><td>5</td><td>3</td><td>9</td><td>22</td><td>24</td><td>-2</td>
+        </tr>
+        <tr>
+            <td><div class="exc-club-flex"><span class="exc-rank">14</span><img src="https://imagenes.excelsior.com.mx/uploads/2026/01/10/1gyen0s2lmk8jrpe8.png" class="exc-club-icon">San Luis</div></td>
+            <td class="exc-pts">18</td><td>17</td><td>5</td><td>3</td><td>9</td><td>24</td><td>27</td><td>-3</td>
+        </tr>
+        <tr>
+            <td><div class="exc-club-flex"><span class="exc-rank">15</span><img src="https://imagenes.excelsior.com.mx/uploads/2026/01/10/wnllyzugfmk8jrpu5.png" class="exc-club-icon">Necaxa</div></td>
+            <td class="exc-pts">18</td><td>17</td><td>5</td><td>3</td><td>9</td><td>19</td><td>25</td><td>-6</td>
+        </tr>
+        <tr>
+            <td><div class="exc-club-flex"><span class="exc-rank">16</span><img src="https://imagenes.excelsior.com.mx/uploads/2026/01/10/ao287juqxmk8jrm7v.png" class="exc-club-icon">Mazatlán</div></td>
+            <td class="exc-pts">15</td><td>17</td><td>4</td><td>3</td><td>10</td><td>22</td><td>37</td><td>-15</td>
+        </tr>
+        <tr>
+            <td><div class="exc-club-flex"><span class="exc-rank">17</span><img src="https://imagenes.excelsior.com.mx/uploads/2026/01/10/8sk8c9vc8mk8jrkxp.png" class="exc-club-icon">Puebla</div></td>
+            <td class="exc-pts">13</td><td>17</td><td>3</td><td>4</td><td>10</td><td>13</td><td>26</td><td>-13</td>
+        </tr>
+        <tr>
+            <td><div class="exc-club-flex"><span class="exc-rank">18</span><img src="https://imagenes.excelsior.com.mx/uploads/2026/01/10/29s7zs0bjmk8jrmec.png" class="exc-club-icon">Santos</div></td>
+            <td class="exc-pts">12</td><td>17</td><td>3</td><td>3</td><td>11</td><td>20</td><td>38</td><td>-18</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div style="max-width: 900px; margin: 20px auto; text-align: center; color: #888; font-size: 12px;">
+    Datos simulados de la Liga MX - Solo para pruebas
+</div>
+</body>
+</html>

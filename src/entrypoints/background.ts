@@ -21,13 +21,32 @@ export default defineBackground(() => {
 
 async function route(request: CommandMessage): Promise<CommandResponse> {
   const tab = await getActiveTab();
+
+  // Scraping: a table can be in the main doc OR a widget iframe, so ask every
+  // frame individually (no race) and merge. Empty frames just return no tables.
+  if (request.command === COMMANDS.SCRAP) {
+    const frames = (await chrome.webNavigation.getAllFrames({ tabId: tab.id! })) ?? [];
+    const settled = await Promise.allSettled(
+        frames.map((f) =>
+            chrome.tabs.sendMessage(tab.id!, request, { frameId: f.frameId }) as Promise<CommandResponse>,
+        ),
+    );
+    const tables: any[] = [];
+    for (const s of settled) {
+      if (s.status === 'fulfilled' && s.value?.success && Array.isArray(s.value.data)) {
+        tables.push(...s.value.data);
+      }
+    }
+    if (!tables.length) return { success: false, error: ERROR_CODES.PAGE_NOT_LOADED === '' ? '' : 'NO_TABLES_FOUND' };
+    tables.forEach((t, i) => (t.index = i)); // re-index across frames
+    return { success: true, data: tables };
+  }
+
+  // Scan/Fill/Terminate act on one document — target the top frame so an empty
+  // ad-iframe can't hijack the response the same way.
   try {
-    // The content script (declared for <all_urls>) does the DOM work and may
-    // itself broadcast progress events straight to the popup.
-    return await chrome.tabs.sendMessage(tab.id!, request);
+    return await chrome.tabs.sendMessage(tab.id!, request, { frameId: 0 });
   } catch {
-    // No receiver = content script not present (e.g. page opened before the
-    // extension was installed, or a chrome:// page). Tell the user plainly.
     return { success: false, error: ERROR_CODES.PAGE_NOT_LOADED };
   }
 }
