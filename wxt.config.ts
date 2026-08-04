@@ -10,7 +10,13 @@ export default defineConfig({
     description: 'Scrape HTML tables to CSV/Excel and batch-fill forms from a spreadsheet.',
     // activeTab is intentionally omitted: <all_urls> host_permissions already
     // grants what we need, and the pair is redundant.
-    permissions: ['scripting', 'downloads', 'storage', 'tabs'],
+    permissions: ['scripting', 'downloads', 'storage', 'tabs', 'webNavigation'],
     host_permissions: ['<all_urls>'],
+    icons: {
+      16: '/icon-16.png',
+      32: '/icon-32.png',
+      48: '/icon-48.png',
+      128: '/icon-128.png',
+    },
   },
 });
